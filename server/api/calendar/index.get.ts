@@ -2,10 +2,6 @@ import { generateYear } from "~/utils/generateYear"
 
 export default defineEventHandler(async (event) => {
   return {
-    years: [
-      generateYear(2025),
-      generateYear(2026),
-      generateYear(2027),
-    ]
+    years: Array(3).fill(0).map((_, idx) => generateYear(idx + 2025))
   }
 })

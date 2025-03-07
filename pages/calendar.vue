@@ -3,14 +3,28 @@ import type { GetCalendarResponse } from '~/types/response/GetCalendarResponse';
 
 const { data } = await useFetch<GetCalendarResponse>('/api/calendar')
 
+const _selectedDate = ref<string>()
+
+const selectedDate = computed(() => _selectedDate.value ? new Date(_selectedDate.value) : new Date())
+const showModal = computed(() => !!selectedDate.value)
+
 function handleCalendarDayClick(e: { date: string }) {
-  console.log(e)
+  _selectedDate.value = e.date
+}
+
+function handleCalendarDayModalClose() {
+  _selectedDate.value = undefined
 }
 
 </script>
 
 <template>
   <div class="mx-auto max-w-7xl p-4">
+    <CalendarDayModal 
+      v-if="showModal" 
+      :date="selectedDate"
+      @on-close="handleCalendarDayModalClose"
+    />
 
     <ul class="flex flex-col gap-4">
       <li v-for="year in data?.years" :key="year.value" class="px-4 py-4 border border-neutral-300 rounded-lg">
