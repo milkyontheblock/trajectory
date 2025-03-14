@@ -3,11 +3,10 @@ import { defineMongooseModel } from "#nuxt/mongoose";
 export const User = defineMongooseModel({
   name: 'User',
   schema: {
-    name: {
-      type: 'string',
-      required: true,
-      unique: true
-    }
+    firstName: 'string',
+    lastName: 'string',
+    email: 'string',
+    password: 'string'
   },
   options: {
     timestamps: true

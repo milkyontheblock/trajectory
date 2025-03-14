@@ -1,8 +1,31 @@
-export default defineEventHandler(async (event) => {
-  const { username, password } = await readBody(event)
+import { User } from "~/server/models/User"
+import { verifyPassword } from "~/utils/verifyPassword"
 
-  return {
-    username,
-    password
+export default defineEventHandler(async (event) => {
+  try {
+    const { email, password } = await readBody(event)
+
+    const user = await User.findOne({email})
+    if (!user) {
+      return createError({
+        message: 'User not found',
+        statusCode: 404
+      })
+    }
+
+    const isSamePassword = await verifyPassword(password, user.password as string)
+    if (!isSamePassword) {
+      return createError({
+        message: 'Unauthorized',
+        statusCode: 401
+      })
+    }
+
+    return user
+  } catch(error) {
+    return createError({
+      message: error as string,
+      statusCode: 500
+    })
   }
 })

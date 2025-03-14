@@ -1,20 +1,18 @@
 <script setup lang="ts">
-  const username = ref<string>()
+  const email = ref<string>()
   const password = ref<string>()
 
   const handleSubmit = async () => {
-    const res = await fetch('/api/user', {
+    fetch('/api/user/signin', {
       method: 'POST',
       headers: {
         'content-type': 'application/json'
       },
       body: JSON.stringify({
-        username: username.value,
-        password: password.value 
+        email: email.value,
+        password: password.value,
       })
     })
-
-    const data = await res.json()
   }
 
 </script>
@@ -23,11 +21,11 @@
   <fieldset class="px-4 py-3">
     <ul class="flex flex-col gap-4">
       <li class="flex flex-col gap-1">
-        <label>Username</label>
+        <label>Email</label>
         <div>
           <InputText
-            type="text"
-            @on-input="(e) => { username = (e.target as HTMLInputElement).value }"
+            type="email"
+            @on-input="(e) => { email = (e.target as HTMLInputElement).value }"
           />
         </div>
       </li>
