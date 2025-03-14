@@ -1,4 +1,5 @@
 import { User } from "~/server/models/User"
+import { signToken } from "~/utils/signToken"
 import { verifyPassword } from "~/utils/verifyPassword"
 
 export default defineEventHandler(async (event) => {
@@ -21,7 +22,7 @@ export default defineEventHandler(async (event) => {
       })
     }
 
-    return user
+    setCookie(event, 'token',  signToken({ user: user.id }))
   } catch(error) {
     return createError({
       message: error as string,
