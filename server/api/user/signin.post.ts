@@ -22,7 +22,10 @@ export default defineEventHandler(async (event) => {
       })
     }
 
-    setCookie(event, 'token',  signToken({ user: user.id }))
+    setCookie(event, 'access_token',  signToken({ 
+      user: user.id,
+      email: user.email
+    }))
   } catch(error) {
     return createError({
       message: error as string,
